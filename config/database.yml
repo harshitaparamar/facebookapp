@@ -27,6 +27,10 @@ development:
   password: <%= Rails.application.credentials.database[:password] %>
   host: localhost
   database: facebookapp_development
+  username: facebook_user
+  password: facebookpassword
+
+
 
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.
