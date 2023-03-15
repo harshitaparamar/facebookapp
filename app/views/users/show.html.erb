@@ -1,0 +1,32 @@
+<h1><%= @user.user_name %></h1>
+<h5><%= @user.email%></h5>
+<%= link_to 'Back', root_path %>
+
+<% @posts= @user.posts.all.order(created_at: :desc) %>
+  <% @posts.each do |post| %>
+    
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-text"><%= post.user.user_name %></h5>
+
+          <h5 class="card-text"><%= post.title %></h5>
+          
+          
+          <p class="card-text"><%= truncate(post.body, length: 60) %></p>
+          <p class="card-text"><%=image_tag post.image.to_s%></p>
+          <p class="card-text"><%= link_to "new comment", post_path(post) %></p>
+
+          <% if post.liked?(current_user)%>
+            <%= button_to '👍 Like',destroy_like_path(post.likes.find_by(user_id: current_user.id)), method: :get, style:"color:red; border:0px; background-color:white;"%>
+          <% else %>
+            <%= button_to "👍 Like", like_path(post), method: "put",style:"color:black;border:0px; background-color:white;"%>
+          <% end%>
+          <p><%= post.likes.count%></p>
+
+
+         
+        </div>
+      </div>
+      <hr>
+    <% end %>
+  

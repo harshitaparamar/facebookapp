@@ -52,6 +52,8 @@ gem "carrierwave"
 gem "mini_magick"
 gem 'file_validators'
 gem "byebug"
+gem 'sassc-rails'
+
 
 
 
@@ -79,3 +81,5 @@ group :test do
   gem "selenium-webdriver"
   gem "webdrivers"
 end
+
+gem "activeadmin", "~> 2.13"
