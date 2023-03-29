@@ -1,8 +1,7 @@
 class CommentsController < ApplicationController
     before_action :set_post, only: [:show, :edit, :update, :destroy]
     before_action :show_data, only: [:show]
-    before_action :authenticate_user!, only: [:new, :edit, :update, :destroy]
-    load_and_authorize_resource
+    
     
     def index
         @comments = Comment.all
