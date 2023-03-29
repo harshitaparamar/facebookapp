@@ -11,6 +11,11 @@
     <%= f.label :user_name %><br />
     <%= f.text_field :user_name, autofocus: true, autocomplete: "user_name" %>
   </div>
+  <div class="field">
+    <%= f.label :profile_image %><br />
+    <%= f.file_field :profile_image, autofocus: true, autocomplete: "profile_image" %>
+  </div>
+
 
   <div class="field">
     <%= f.label :password %>

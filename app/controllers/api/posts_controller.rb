@@ -62,6 +62,7 @@ class Api::PostsController < ApplicationController
         if @post.likes.present? || @post.comments.present?
             @post.likes.destroy_all
             @post.comments.destroy_all
+            @post.destroy
             render json: @post
         
         else

@@ -1,6 +1,6 @@
 <div class="card ml-5">
   <div class="card-body">
-    <%= form_with(model: [post]) do |form| %>
+    <%= form_with(model: [post, comment.replies.build]) do |form| %>
 
       <%= form.hidden_field :parent_id %>
       <div class="form-group">

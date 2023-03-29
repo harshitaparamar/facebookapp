@@ -1,7 +1,5 @@
 Rails.application.routes.draw do
-  devise_for :admin_users, ActiveAdmin::Devise.config
-  ActiveAdmin.routes(self)
-  
+
   
   get 'users/index'
 
@@ -10,6 +8,7 @@ Rails.application.routes.draw do
   namespace :api do
     resources :posts do
       resources :comments
+
     end
   end
   # put '/api/posts/:id/like', to: 'posts#like', as: 'like'
@@ -22,9 +21,19 @@ Rails.application.routes.draw do
   root "home#index"
   resources :posts do
     resources :comments
+    # resources :likes
+
   end
   put '/posts/:id/like', to: 'posts#like', as: 'like'
   get '/posts/:id/like', to: 'posts#destroy_like', as: 'destroy_like'
+  get '/users/:id', to: "users#suspend", as: 'suspend_user'
+  put '/users/:id', to: "users#unsuspend", as: 'unsuspend_user'
+
+
+
+  
+
+
   get  "users/:id", to: "users#show"
 
 

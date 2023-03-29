@@ -1,0 +1,11 @@
+<!--Search form-->
+          <div class="d-flex input-group w-auto">
+          <%= form_tag("users/:user_name", :method=>"get") do %>
+          <div class="input-group">
+            <%= search_field_tag :search, params[:user_name], placeholder: "Search Users", class: "form-control" %>
+            <div class="input-group-btn"  >
+            <%= button_tag "search for users", :class =>'btn btn-info glyphicon glyphicon-search',:name =>nil%>
+          </div>
+          <%end%>
+          </div>
+<!--Search form-->

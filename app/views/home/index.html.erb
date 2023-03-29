@@ -1,50 +1,10 @@
 
 <% if user_signed_in? %> 
-  <div> Welcome <%= current_user.email %> </div> 
-  <%= button_to "Sign out", destroy_user_session_path, method: :delete %> 
-  <h4><%= link_to 'My post', posts_path %></h4>
-  <!--Search form-->
-          <div class="d-flex input-group w-auto">
-          <%= form_tag("users/:user_name", :method=>"get") do %>
-          <div class="input-group">
-            <%= search_field_tag :search, params[:user_name], placeholder: "Search Users", class: "form-control" %>
-            <div class="input-group-btn"  >
-            <%= button_tag "search for users", :class =>'btn btn-info glyphicon glyphicon-search',:name =>nil%>
-          </div>
-          <%end%>
-          </div>
-          <!--Search form-->
-          <%= render :template => "users/index" %> 
-  </div>
-
-  
-  <% @posts=(Post.all.order(created_at: :desc))%>
-  <% @posts.each do |post| %>
-    
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-text"><%= post.user.user_name %></h5>
-
-          <h5 class="card-text"><%= post.title %></h5>
-          
-          
-          <p class="card-text"><%= truncate(post.body, length: 60) %></p>
-          <p class="card-text"><%=image_tag post.image.to_s%></p>
-          <p class="card-text"><%= link_to "new comment", post_path(post) %></p>
-
-          <% if post.liked?(current_user)%>
-            <%= button_to '👍 Like',destroy_like_path(post.likes.find_by(user_id: current_user.id)), method: :get, style:"color:red; border:0px; background-color:white;"%>
-          <% else %>
-            <%= button_to "👍 Like", like_path(post), method: "put",style:"color:black;border:0px; background-color:white;"%>
-          <% end%>
-          <p><%= post.likes.count%></p>
+  <%= button_to "Sign out", destroy_user_session_path, method: :delete %>
+  <%= render partial: "home/form" %>
 
 
-         
-        </div>
-      </div>
-      <hr>
-  <% end %>
+
   
 
 

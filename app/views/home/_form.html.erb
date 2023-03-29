@@ -1,0 +1,82 @@
+
+  <div> Welcome <%= current_user.email %> </div> 
+  <div> <%=image_tag current_user.profile_image.to_s, :size => "105x60" %></p></div>
+  <div> <%= link_to 'Edit Profile', edit_user_registration_path(current_user) %></div>
+
+
+
+  <h4><%= link_to 'My post', posts_path %></h4>
+  
+      <%= render :partial => "users/form" %> 
+
+  </div>
+  <% if current_user.role=="admin" %>
+        <% @users= User.all %>
+        <% @users.each do |user| %>
+
+          
+
+          <%= user.role %>
+          <%= user.email %>
+          <%= user.user_name %>
+          <% if user.suspended == true %>
+
+            <%= button_to 'UnSuspend', unsuspend_user_path(user),method: :put, data:{confirm:'Are you sure?'} %>
+          <% else %>
+            <%= button_to 'Suspend', suspend_user_path(user),method: :get, data:{confirm:'Are you sure?'} %>
+
+          <% end %>
+
+          <p><%=image_tag user.profile_image.to_s, :size => "105x60" %></p><br><br>
+
+
+
+
+
+        <% end %>
+  <% end %>
+  <%= render :template => "posts/new" %><br><br>
+
+
+
+
+  
+
+  
+  <% @posts = (Post.preload(:user).all.order(created_at: :desc)) %>
+  <%= @posts.count %>
+  <% @posts.each do |post| %>
+
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-text"><%= post.user.user_name %></h5>
+
+          <h5 class="card-text"><%= post.title %></h5>
+          
+          
+          <p class="card-text"><%= truncate(post.body, length: 60) %></p>
+          <p class="card-text"><%=image_tag post.image.to_s, :size => "208x200" %></p>
+            
+          <% if post.liked?(current_user)%>
+                <%= button_to '👍 Like',destroy_like_path(post), method: :get, style:"color:red; border:0px; background-color:white;"%>
+            <% else %>
+                <%= button_to "👍 Like", like_path(post), method: "put",style:"color:black;border:0px; background-color:white;"%>
+            <% end%>
+
+          <p><%= post.likes.count%></p>
+
+          <%= button_to 'Destroy',"/posts/#{post.id}", method: :delete,
+                     :onclick => "return confirm('Are you sure you want to delete this task?')" , class: 'btn btn-danger mr-2' %>
+
+          <%#redirect_to (@post: post ) %>
+
+          <%= render partial: "posts/post", locals: { post: post } %>
+
+
+
+
+         
+        </div>
+      </div>
+      <hr>
+    <% end%>

@@ -1,5 +1,7 @@
 class PostsController < ApplicationController
-    before_action :set_post, only: [:show, :edit, :update, :like, :destroy]
+    before_action :set_post, only: [:show, :update, :like, :destroy]
+    before_action :authenticate_user!, only: [:new, :edit, :update, :destroy]
+    load_and_authorize_resource
     def index
         # byebug
 
@@ -28,6 +30,8 @@ class PostsController < ApplicationController
         end
     end
     def edit
+        @posts = current_user.posts.order('created_at DESC')
+
     end
     def update
         @post = Post.find(params[:id])
@@ -40,13 +44,25 @@ class PostsController < ApplicationController
         end
     end
     def like
+        
+        
         Like.create(user_id: current_user.id, post_id: @post.id)
         redirect_to root_path(@post)
     end
     def destroy_like
-        if Like.destroy(params[:id])
+        
+        @like=Like.where("post_id = ?", params[:id])
+        @like_destroy= @like.where("user_id = ?", current_user.id)
+
+
+        
+        # @like=post.likes.find_by(user_id: current_user.id, post: post.id)
+        # @like.destroy
+        if Like.destroy(@like_destroy.ids)
+
+        # if Like.destroy(params[:id])
           redirect_to root_path
-        end
+         end
     end
     def destroy
         
@@ -57,14 +73,24 @@ class PostsController < ApplicationController
         # @post=Post.find(params[:id])
         # @post.likes.destroy_all
         # @post.comments.destroy(@post.id)
-        # redirect_to root_path
-        if @post.likes.present? || @post.comments.present?
-            @post.likes.destroy_all
-            @post.comments.destroy_all
-            redirect_to root_path        
+        # redirect_to
+        
+        if current_user.id == @post.user_id || User.where(role:"admin")
+
+
+
+            
+            if @post.likes.present? || @post.comments.present?
+                @post.likes.destroy_all
+                @post.comments.destroy_all
+                @post.destroy
+                redirect_to root_path        
+            else
+                @post.destroy
+                redirect_to root_path
+            end 
         else
-            @post.destroy
-            redirect_to root_path
+            redirect_to root_path, notice: "You have not access to delete this post...."
         end
 
     end
